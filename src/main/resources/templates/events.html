@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Choose event</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <style>
+        label {
+            color: rgb(255,255,255);
+            font-size: 12px;
+            top: 4px;
+        }
+        .mdl-card__title {
+            background-color: rgb(48, 63, 159);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="demo-card-wide mdl-card mdl-shadow--2dp" style="min-width: 700px; margin: 80px auto;">
+    <div class="mdl-card__title">
+        <form action="events" method="get">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--5-col">
+                    <div class="mdl-textfield mdl-js-textfield" style="margin-right: 15px;">
+                        <label for="date1">From:</label>
+                        <input class="mdl-textfield__input" type="date" th:value="${from}" id="date1" name="from">
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--5-col">
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <label for="date2">To:</label>
+                        <input class="mdl-textfield__input" type="date" th:value="${to}" id="date2" name="to">
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--2-col" style="display: flex;align-items: center;">
+                    <div style="width:100%;">
+                        <button class="mdl-button mdl-js-button mdl-button--raised" style="float:right;" type="submit">
+                            <i class="material-icons">search</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="mdl-card__supporting-text" style="width: initial;">
+        <th:block th:if="${happens == null}">
+            <p style="text-align:center;">Select dates to view events.</p>
+        </th:block>
+        <th:block th:if="${happens != null}">
+            <table class="mdl-data-table mdl-js-data-table" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric">Time and date</th>
+                        <th class="mdl-data-table__cell--non-numeric">Event</th>
+                        <th class="mdl-data-table__cell--non-numeric">Room</th>
+                        <th class="mdl-data-table__cell--non-numeric">Free seats</th>
+                        <th class="mdl-data-table__cell--non-numeric">Open</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="happen: ${happens}">
+                        <td class="mdl-data-table__cell--non-numeric" th:text = "${happen.getTimeStart() + ' ' + happen.getDateStart()}"></td>
+                        <td class="mdl-data-table__cell--non-numeric" th:text = "${happen.getEvent().getName()}"></td>
+                        <td class="mdl-data-table__cell--non-numeric" th:text = "${happen.getRoom().getName()}"></td>
+                        <td class="mdl-data-table__cell--non-numeric"></td>
+                        <td class="mdl-data-table__cell--non-numeric">
+                            <a th:href="'seats?id=' + ${happen.getId()}">Open</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

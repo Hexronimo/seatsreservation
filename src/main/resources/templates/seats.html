@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Choose seat</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <style>
+        label {
+            color: rgb(255,255,255);
+            font-size: 12px;
+            top: 4px;
+        }
+        .mdl-card__title {
+            background-color: rgb(48, 63, 159);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="demo-card-wide mdl-card mdl-shadow--2dp" style="min-width: 700px; margin: 80px auto;">
+    <div class="mdl-card__title">
+        <form action="events" method="post">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--4-col">
+                        From: <th:block th:text="${happen.getTimeStart() + ' ' + happen.getDateStart()}"></th:block>
+                        <br>
+                        To: <th:block th:text="${happen.getTimeEnd() + ' ' + happen.getDateEnd()}"></th:block>
+                        <br>
+                        At: <th:block th:text="${happen.getRoom().getName()}"></th:block>
+                </div>
+                <div class="mdl-cell mdl-cell--8-col">
+                    <h3>
+                        <th:block th:text="${happen.getEvent().getName()}"></th:block>
+                    </h3>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col">
+                    <th:block th:text="${happen.getEvent().getInfo()}"></th:block>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="mdl-card__supporting-text" style="width: initial;">
+        <div class="mdl-grid">
+            <th:block th:each="reservation: ${reservations}">
+                <div class="mdl-cell mdl-cell--1-col">
+
+                    <!-- If seat is free-->
+                    <th:block th:if="${reservation.getCustomer() == null}">
+                        <form action="reserve" method="get">
+                            <input th:value="${reservation.getId()}" name="id" hidden />
+                            <button style="background: darkseagreen; padding:2px; width:100%; border:0; text-align:center;" th:text="${reservation.getSimpleSeat().getName()}" type="submit"></button>
+                        </form>
+                    </th:block>
+
+                    <!-- If seat is reserved-->
+                    <div th:text="${reservation.getSimpleSeat().getName()}" th:if="${reservation.getCustomer() != null}" style="background: firebrick; padding:2px; text-align:center;"></div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

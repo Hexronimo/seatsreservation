@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add event</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <style>
+        label {
+            color: rgb(63,81,181);
+            font-size: 12px;
+            top: 4px;
+        }
+        .mdl-card__title {
+            background-color: rgb(48, 63, 159);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp" style="width: 700px; margin: 80px auto;">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Add new event</h2>
+        </div>
+        <form action="add" method="post">
+        <div class="mdl-card__supporting-text">
+            <div class="mdl-textfield mdl-js-textfield" style="margin-right: 15px;">
+                <label for="date1">Start date</label>
+                <input class="mdl-textfield__input" type="date" id="date1" name="dateStart">
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <label for="time1">Start time</label>
+                <input class="mdl-textfield__input" type="time" id="time1" name="timeStart">
+            </div>
+            <div class="mdl-textfield mdl-js-textfield" style="margin-right: 15px;">
+                <label for="date2">End date</label>
+                <input class="mdl-textfield__input" type="date" id="date2" name="dateEnd">
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <label for="time2">End time</label>
+                <input class="mdl-textfield__input" type="time" id="time2" name="timeEnd">
+            </div>
+            <div class="mdl-textfield mdl-js-textfield" style="margin-right: 15px;">
+                <label for="events">Event</label>
+                <select class="mdl-textfield__input" id="events" name="event">
+                    <th:block th:each="event: ${events}">
+                        <option  th:value="${event.key}"  th:text="${event.value}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <label for="rooms">Room</label>
+                <select class="mdl-textfield__input" id="rooms" name="room">
+                    <th:block th:each="room: ${rooms}">
+                        <option  th:value="${room.key}"  th:text="${room.value}"></option>
+                    </th:block>
+                </select>
+            </div>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                Add
+            </button>
+        </div>
+        </form>
+    </div>
+
+
+    <div id="demo-toast" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+    <script>
+        (function() {
+            'use strict';
+            var snackbarContainer = document.querySelector('#demo-toast');
+            var showToastButton1 = document.querySelector('#time1');
+            var showToastButton2 = document.querySelector('#time2');
+            function timeClick() {
+                'use strict';
+                var data = {message: 'The time can be in "12:00" or "12:00 AM" format. It depends on your browser.'};
+                snackbarContainer.MaterialSnackbar.showSnackbar(data);
+            }
+            showToastButton1.addEventListener('click', timeClick);
+            showToastButton2.addEventListener('click', timeClick);
+        }());
+    </script>
+</body>
+</html>
